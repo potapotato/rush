@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="link(title)">
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+    <script th:src="@{js/vue.js}"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" th:href="@{css/index.css}">
+    <!-- 引入组件库 -->
+    <script th:src="@{js/index.js}"></script>
+    <link rel="shortcut icon" th:href="@{icon/duck.ico}">
+</head>
+
+
+</html>
