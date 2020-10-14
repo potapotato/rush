@@ -1,0 +1,47 @@
+表关系
+
+Course表 ---- Chapter表 ---- Section表 ---- Question表
+		1 - n          1 - n          1 - n
+
+User表 ---- Course表
+	   1 - n
+
+Course表 ---- Role表
+		m - n
+
+User表 ----  Role表 ---- Permission表
+	  m - n        m - n		
+	  
+	  
+表结构
+
+Course:
+	id,name,description,created_time,create_user_id
+	
+Chapter:
+	id,course_id,name,created_time
+
+Section:
+	id,chapter_id,name,created_time,
+
+Question:
+	id,section_id,question_url,question_text,answer_url,answer_text,score,type,created_time,create_user_id,enabled
+
+User:
+	id,username,password,nickname,salt,icon_url,email,created_time
+
+Role:
+	id,role_name
+
+Permission:
+	id,permession_str
+
+Course_role:
+	id, course_id,role_id
+
+User_role:
+	id,user_id,role_id
+
+Role_permission:
+	id,role_id,permission_id
+
