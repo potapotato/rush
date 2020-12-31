@@ -1,5 +1,6 @@
 package top.waxijiang.rush.configuration;
 
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -37,6 +38,7 @@ public class ShiroConfig {
 
         map.put("/logout", "logout");
         map.put("/login", "anon");
+        map.put("/register", "anon");
         map.put("/login.html", "anon");
         map.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
@@ -52,6 +54,14 @@ public class ShiroConfig {
 
     @Bean("customerRealm")
     public Realm getRealm() {
-        return new CustomerRealm();
+        CustomerRealm customerRealm = new CustomerRealm();
+        //设置hashed凭证匹配器
+        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
+        //设置md5加密
+        credentialsMatcher.setHashAlgorithmName("md5");
+        //设置散列次数
+        credentialsMatcher.setHashIterations(1024);
+        customerRealm.setCredentialsMatcher(credentialsMatcher);
+        return customerRealm;
     }
 }

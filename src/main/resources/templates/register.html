@@ -1,0 +1,140 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>注册</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" th:href="@{/css/elementUI.css}">
+    <!-- Favicons -->
+    <meta name="theme-color" content="#563d7c">
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/signin.css}" rel="stylesheet">
+</head>
+
+<body class="text-center">
+<form class="form-signin" method="post" th:action="@{/register}">
+    <img class="mb-4" th:src="@{/img/getIcon}" alt=""
+         width="72"
+         height="72">
+    <h1 class="h3 mb-3 font-weight-normal">注册来加入我们吧~</h1>
+    <span th:text="${msg}" style="color: red"></span>
+    <label for="inputEmail" class="sr-only">用户名</label>
+    <input type="text" id="inputEmail" class="form-control" placeholder="账户" required autofocus name="username">
+    <label for="inputPassword" class="sr-only">密码</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="密码" required name="password">
+    <label for="inputRepeatPassword" class="sr-only">确认密码</label>
+    <input type="password" id="inputRepeatPassword" class="form-control" placeholder="再输入一次密码" required
+           name="repeatPassword">
+    <label for="nickname" class="sr-only">昵称</label>
+    <input type="text" id="nickname" class="form-control" placeholder="昵称" required name="nickname">
+    <label for="email" class="sr-only">邮箱</label>
+    <input type="email" id="email" class="form-control" placeholder="邮箱" required name="email">
+    <span style="color: gray">上传头像</span>
+    <div id="upload">
+        <el-upload
+                class="avatar-uploader"
+                th:action="@{/img/uploadIcon}"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+                name="icon">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+        <input type="hidden" name="iconUrl" :value="trueImageUrl">
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+    <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+</form>
+
+
+<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<!-- 引入组件库 -->
+<script th:src="@{js/vue.js}"></script>
+<script th:src="@{/js/elementUI.js}"></script>
+
+<script>
+
+    var vue = new Vue({
+        el: "#upload",
+        data: function () {
+            return {
+                imageUrl: ""
+            }
+        },
+        methods: {
+            handleAvatarSuccess(res, file) {
+                this.trueImageUrl = res;
+                this.imageUrl = URL.createObjectURL(file.raw);
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            }
+        }
+    })
+</script>
+</body>
+
+</html>
+

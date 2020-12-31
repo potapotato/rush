@@ -32,11 +32,12 @@
 </head>
 
 <body class="text-center">
-<form class="form-signin" method="post" action="${pageContext.request.contextPath}/login">
+<form class="form-signin" method="post" th:action="@{/login}">
     <img class="mb-4" th:src="@{/img/getIcon}" alt=""
          width="72"
          height="72">
     <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
+    <span th:text="${msg}" style="color: red"></span>
     <label for="inputEmail" class="sr-only">账户</label>
     <input type="text" id="inputEmail" class="form-control" placeholder="账户" required autofocus name="username">
     <label for="inputPassword" class="sr-only">密码</label>
