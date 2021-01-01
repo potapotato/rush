@@ -59,7 +59,17 @@
 <script th:src="@{/js/vue.js}"></script>
 <script>
     new Vue({
-        el: "#app"
+        el: "#app",
+        data: function () {
+            return {
+            }
+        },
+        mounted(){
+            const path = document.getElementById("iconUrl").childNodes[0].innerHTML;
+            const url = document.getElementById("user_icon").src
+            document.getElementById("user_icon").src = url + path
+        },
+        methods: {}
     })
 </script>
 </html>

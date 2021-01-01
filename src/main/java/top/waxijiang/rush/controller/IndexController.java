@@ -43,7 +43,7 @@ public class IndexController {
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(new UsernamePasswordToken(username, password));
-            return new ModelAndView("index");
+            return new ModelAndView("redirect:/");
         } catch (UnknownAccountException e) {
             System.out.println("username error");
             return new ModelAndView("login", "msg", "用户名不存在");
@@ -58,7 +58,7 @@ public class IndexController {
         if (password.equals(repeatPassword)){
             User user = new User(username, password, nickname, iconUrl, new Date(), email, true);
             if (userService.register(user)){
-                return new ModelAndView("redirect:/index");
+                return new ModelAndView("redirect:/");
             }else {
                 return new ModelAndView("/register", "msg", "注册失败");
             }

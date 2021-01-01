@@ -22,7 +22,7 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectByUsername" resultType="top.waxijiang.rush.entity.User">
-    select * from User where username = #{username}
+    select * from User where username = #{username} and enabled = 1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from User

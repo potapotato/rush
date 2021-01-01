@@ -28,7 +28,8 @@ public class CustomerRealm extends AuthorizingRealm {
         UserService userService = (UserService) ApplicationContextUtils.getBean("userService");
         User user = userService.findUserByUsername(principal);
         if (!ObjectUtils.isEmpty(user)) {
-            return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), ByteSource.Util.bytes(user.getSalt()), this.getName());
+            // 这里返回user对象更方便前端使用
+            return new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getSalt()), this.getName());
         } else {
             return null;
         }
