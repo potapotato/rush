@@ -16,25 +16,25 @@ User表 ----  Role表 ---- Permission表
 表结构
 
 Course:
-	id,name,description,created_time,create_user_id
+	id,name,description,created_time,create_user_id,enabled
 	
 Chapter:
-	id,course_id,name,created_time
+	id,course_id,name,created_time,enabled
 
 Section:
-	id,chapter_id,name,created_time,
+	id,chapter_id,name,created_time,enabled
 
 Question:
 	id,section_id,question_url,question_text,answer_url,answer_text,score,type,created_time,create_user_id,enabled
 
 User:
-	id,username,password,nickname,salt,icon_url,email,created_time
+	id,username,password,nickname,salt,icon_url,email,created_time,enabled
 
 Role:
-	id,role_name
+	id,role_name,enabled
 
 Permission:
-	id,permession_str
+	id,permession_str,enabled
 
 Course_role:
 	id, course_id,role_id
