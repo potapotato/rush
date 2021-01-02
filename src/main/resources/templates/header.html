@@ -37,7 +37,7 @@
                 <ul class="my-2 my-md-0 navbar-nav" shiro:authenticated="">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                            <img th:src="${#httpServletRequest.getContextPath()+'/img/getImage?imgPath='}" style="border-radius: 50%" alt="" id="user_icon" width="40px">
+                            <img th:src="'/img/getImage'" style="border-radius: 50%" alt="" id="user_icon" width="40px">
                             <span shiro:principal property="nickname"></span>
                             <div hidden id="iconUrl">
                                 <span shiro:principal property="iconUrl"></span>

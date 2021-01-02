@@ -62,7 +62,7 @@ public class ImageController {
         }
     }
 
-    @GetMapping("getIcon")
+    @GetMapping("getRandomIcon")
     public void getRandomIcon(HttpServletResponse response) {
         Random random = new Random();
         String path = loginIconPath;

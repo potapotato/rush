@@ -7,7 +7,6 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import top.waxijiang.rush.entity.User;
+import top.waxijiang.rush.service.CourseService;
 import top.waxijiang.rush.service.UserService;
 
 import java.util.Date;
@@ -27,13 +27,16 @@ import java.util.Date;
 public class IndexController {
     Logger logger = LoggerFactory.getLogger(IndexController.class);
     final UserService userService;
+    final CourseService courseService;
 
-    public IndexController(UserService userService) {
+    public IndexController(UserService userService, CourseService courseService) {
         this.userService = userService;
+        this.courseService = courseService;
     }
 
     @RequestMapping("")
-    public String toIndex() {
+    public String toIndex(Model model) {
+        model.addAttribute("courses", courseService.getAllCourse());
         return "index";
     }
 
@@ -55,14 +58,14 @@ public class IndexController {
 
     @PostMapping("register")
     public ModelAndView register(String username, String password, String repeatPassword, String nickname, String email, String iconUrl) {
-        if (password.equals(repeatPassword)){
+        if (password.equals(repeatPassword)) {
             User user = new User(username, password, nickname, iconUrl, new Date(), email, true);
-            if (userService.register(user)){
+            if (userService.register(user)) {
                 return new ModelAndView("redirect:/");
-            }else {
+            } else {
                 return new ModelAndView("/register", "msg", "注册失败");
             }
-        }else {
+        } else {
             return new ModelAndView("/register", "msg", "两次输入的密码不同");
         }
     }
