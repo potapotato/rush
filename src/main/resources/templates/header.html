@@ -34,14 +34,11 @@
                     <li class="nav-item"><a class="nav-link" th:href="@{/login}">登录</a></li>
                 </ul>
                 <!-- 如果已经登录显示-->
-                <ul class="my-2 my-md-0 navbar-nav" shiro:authenticated="">
+                <ul class="my-2 my-md-0 navbar-nav" shiro:authenticated="" id="icon">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                            <img th:src="'/img/getImage'" style="border-radius: 50%" alt="" id="user_icon" width="40px">
+                            <img th:src="@{/img/getImage(imgPath=${session.user.iconUrl})}" style="border-radius: 50%" alt="" id="user_icon" width="40px">
                             <span shiro:principal property="nickname"></span>
-                            <div hidden id="iconUrl">
-                                <span shiro:principal property="iconUrl"></span>
-                            </div>
                         </a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="#">个人主页</a>

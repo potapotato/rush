@@ -23,25 +23,25 @@
             <div class="container">
 
                 <div class="row">
-                        <div class="col-md-4" th:each="course:${courses}">
-                            <div class="card mb-4 shadow-sm">
-                                <title th:text="${course.name}"></title>
-                                <img width="100%" height="200" th:src="@{/img/getImage(imgPath=${course.imgUrl})}"
-                                     alt="no">
-                                <div class="card-body">
-                                    <p class="card-text" th:text="${course.name}"></p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="btn-group">
-                                            <a href="#"
-                                               class="btn btn-sm btn-outline-secondary">我要做题</a>
-                                            <a href="#"
-                                               class="btn btn-sm btn-outline-secondary">我要复习</a>
-                                        </div>
-                                        <small class="text-muted">总题量: 0</small>
+                    <div class="col-md-4" th:each="course:${courses}">
+                        <div class="card mb-4 shadow-sm">
+                            <title th:text="${course.name}"></title>
+                            <img width="100%" height="200" th:src="@{/img/getImage(imgPath=${course.imgUrl})}"
+                                 alt="no">
+                            <div class="card-body">
+                                <p class="card-text" th:text="${course.name}"></p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a href="#"
+                                           class="btn btn-sm btn-outline-secondary">我要做题</a>
+                                        <a href="#"
+                                           class="btn btn-sm btn-outline-secondary">我要复习</a>
                                     </div>
+                                    <small class="text-muted">总题量: 0</small>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,18 +54,4 @@
 <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <script th:src="@{/js/vue.js}"></script>
-<script>
-    new Vue({
-        el: "#app",
-        data: function () {
-            return {}
-        },
-        mounted() {
-            const path = document.getElementById("iconUrl").childNodes[0].innerHTML;
-            const url = document.getElementById("user_icon").src
-            document.getElementById("user_icon").src = url + "?imgPath=" +path
-        },
-        methods: {}
-    })
-</script>
 </html>
