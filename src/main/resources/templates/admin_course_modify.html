@@ -1,67 +1,191 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/layui.css">
-    <title>类别添加</title>
+    <link rel="stylesheet" th:href="@{/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/elementUI.css}">
+    <script th:src="@{/js/vue.js}"></script>
+    <script th:src="@{/js/elementUI.js}"></script>
+    <title>科目添加</title>
     <style>
-        .wrapper{
+        .wrapper {
             width: 500px;
             height: 400px;
             margin: 100px auto;
-
         }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
+    </style>
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <form action="${pageContext.request.contextPath}/typeUpdateServlet" method="post">
-            <div class="layui-form-item">
-                <input type="hidden" name="type_id" value="${requestScope.type.typeId}">
-                <label class="layui-form-label">列表名称</label>
-                <div class="layui-input-block">
-                  <input type="text" onchange="changeText()" name="type_name" lay-verify="title" autocomplete="off"
-                         placeholder="请输入类别名称" class="layui-input" value="${requestScope.type.typeName}">
-                </div>
-              </div>
-              <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">类别描述</label>
-                <div class="layui-input-block">
-                  <textarea placeholder="请输入内容" name="type_desc" class="layui-textarea"
-                            onchange="changeText()">${requestScope.type.typeDesc}</textarea>
-                </div>
-              </div>
-              <div style="width: 216px; margin: 0 160px;">
-                <button type="submit" class="layui-btn layui-btn-fluid layui-btn" onclick="return check()">立即修改</button>
-              </div>
-        </form>
-    </div>
+<div class="wrapper">
+    <form th:action="@{/admin/updateCourse}" method="post" class="layui-form">
+        <input type="hidden" name="id" th:value="${course.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">科目名称</label>
+            <div class="layui-input-block">
+                <input type="text" onchange="changeText()" name="name" lay-verify="title" autocomplete="off"
+                       placeholder="请输入课程名称" class="layui-input" th:value="${course.name}">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">科目描述</label>
+            <div class="layui-input-block">
+                <textarea th:text="${course.description}" placeholder="请输入内容" name="desc" class="layui-textarea"
+                          onchange="changeText()"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">所属用户</label>
+            <div class="layui-input-block">
+                <select name="createUserId">
+                    <option th:value="${course.createUserId}" th:text="${username}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">科目封面</label>
+            <div id="upload">
+                <el-upload
+                        class="avatar-uploader"
+                        th:action="@{/img/uploadCourseImage}"
+                        :show-file-list="false"
+                        :on-success="handleAvatarSuccess"
+                        :before-upload="beforeAvatarUpload"
+                        name="icon">
+                    <div th:value="${course.imgUrl}" id="imgUrl"></div>
+                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+                <input type="hidden" name="imgUrl" :value="trueImageUrl">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否可用</label>
+            <div class="layui-input-block">
+                <input type="checkbox" th:checked="${course.enabled}" name="enabled" lay-skin="switch" lay-filter="switchTest"
+                       lay-text="ON|OFF">
+            </div>
+        </div>
+
+
+        <div style="width: 216px; margin: 0 160px;">
+            <button type="submit" class="layui-btn layui-btn-fluid" onclick="return check()">修改
+            </button>
+        </div>
+    </form>
+</div>
 </body>
+<script th:src="@{/js/layui.js}"></script>
 <script>
-function changeText(){
-    // title = document.getElementById("main").contentWindow.document.getElementsByName("title")[0].innerText
-    // desc = document.getElementById("main").contentWindow.document.getElementsByName("desc")[0].innerText
-    title = document.getElementsByName("title")[0].value;
-    desc = document.getElementsByName("desc")[0].value;
-    if (title !== "" && desc !== ""){
-        document.getElementsByTagName("button")[0].className = "layui-btn layui-btn-fluid"
-    }else{
-        document.getElementsByTagName("button")[0].className = "layui-btn layui-btn-fluid layui-btn-disabled"
+    layui.use(['element', 'form'], function () {
+        var element = layui.element;
+        var form = layui.form;
+
+    });
+
+    function changeText() {
+        title = document.getElementsByName("name")[0].value;
+        desc = document.getElementsByName("desc")[0].value;
+        if (title !== "" && desc !== "") {
+            document.getElementsByTagName("button")[0].className = "layui-btn layui-btn-fluid"
+        } else {
+            document.getElementsByTagName("button")[0].className = "layui-btn layui-btn-fluid layui-btn-disabled"
+        }
     }
-}
-function check(){
-    title = document.getElementsByName("title")[0].value;
-    desc = document.getElementsByName("desc")[0].value;
-    if (title.length >= 16){
-        alert("类别名称过长！")
-        return false
-    }else if(desc.length >= 40){
-        alert("类别描述过长!")
-        return false
-    }else{
-        return true
+
+    function check() {
+        title = document.getElementsByName("title")[0].value;
+        desc = document.getElementsByName("desc")[0].value;
+        if (title.length >= 16) {
+            alert("类别名称过长！")
+            return false
+        } else if (desc.length >= 40) {
+            alert("类别描述过长!")
+            return false
+        } else if (title.length === 0 || desc.length === 0) {
+            alert("请输入必填项!")
+            return false
+        } else {
+            return true
+        }
     }
-}
+</script>
+<script>
+    var vue = new Vue({
+        el: "#upload",
+        data: function () {
+            return {
+                imageUrl: "",
+                trueImageUrl: ""
+            }
+        },
+        methods: {
+            handleAvatarSuccess(res, file) {
+                this.trueImageUrl = res;
+                this.imageUrl = URL.createObjectURL(file.raw);
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            }
+        },
+        created: function () {
+            this.imageUrl = "/img/getImage?imgPath=" + document.getElementById("imgUrl").attributes["value"].value
+            this.trueImageUrl = document.getElementById("imgUrl").attributes["value"].value
+        }
+    })
 </script>
 </html>

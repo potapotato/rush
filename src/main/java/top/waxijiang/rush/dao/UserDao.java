@@ -6,6 +6,7 @@ import top.waxijiang.rush.entity.Role;
 import top.waxijiang.rush.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Mapper
@@ -17,6 +18,8 @@ public interface UserDao {
     int insertSelective(User record);
 
     User selectByPrimaryKey(Integer id);
+
+    List<User> selectByCondition(Map<String, Object> map);
 
     int updateByPrimaryKeySelective(User record);
 

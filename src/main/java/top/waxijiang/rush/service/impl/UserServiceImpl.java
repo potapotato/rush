@@ -9,7 +9,9 @@ import top.waxijiang.rush.entity.User;
 import top.waxijiang.rush.service.UserService;
 import top.waxijiang.rush.utils.SaltUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author waxijiang
@@ -34,5 +36,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUsername(String username) {
         return userDao.selectByUsername(username);
+    }
+
+    @Override
+    public List<User> findAllUser() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("enabled", true);
+        List<User> users = userDao.selectByCondition(map);
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            user.setPassword(null);
+            users.set(i, user);
+        }
+        return users;
+    }
+
+    @Override
+    public User findUserById(Integer userId) {
+        return userDao.selectByPrimaryKey(userId);
     }
 }

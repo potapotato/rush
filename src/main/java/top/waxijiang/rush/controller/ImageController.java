@@ -28,6 +28,9 @@ public class ImageController {
     @Value("${custom.userIconPath}")
     private String userIconPath;
 
+    @Value("${custom.courseImagePath}")
+    private String courseImagePath;
+
     /**
      * 根据相对路径获取图片
      *
@@ -76,7 +79,7 @@ public class ImageController {
     }
 
     /**
-     * 上传图片
+     * 上传用户头像图片
      *
      * @param icon    图片对象 MultipartFile
      * @param request HttpServletRequest对象
@@ -100,6 +103,39 @@ public class ImageController {
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("头像上传失败!");
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 上传课程封面
+     *
+     * @param icon    图片对象 MultipartFile
+     * @param request HttpServletRequest对象
+     * @return 图片的url地址
+     */
+    @PostMapping("uploadCourseImage")
+    @ResponseBody
+    public String uploadCourseImage(MultipartFile icon, HttpServletRequest request) {
+        if (icon != null) {
+            try {
+                String parentPath = courseImagePath;
+                InputStream inputStream = icon.getInputStream();
+                String filename = SecureUtil.md5(inputStream);
+                String[] split = icon.getOriginalFilename().split("\\.");
+                filename += "." + split[split.length - 1];
+                File file = new File(parentPath, filename);
+                if (!file.exists()) {
+                    icon.transferTo(file);
+                }
+                // todo: 硬编码问题
+                return "courseImages/" + filename;
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("课程图片上传失败!");
                 return null;
             }
         } else {

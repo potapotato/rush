@@ -27,8 +27,34 @@
         where username = #{username}
           and enabled = 1
     </select>
+    <select id="selectByCondition" resultType="top.waxijiang.rush.entity.User" parameterType="Map">
+        select * from User
+        <where>
+            <if test="username != null">
+                username=#{username}
+            </if>
+            <if test="nickname != null">
+                and nickname=#{nickname}
+            </if>
+            <if test="salt != null">
+                and salt=#{salt}
+            </if>
+            <if test="iconUrl != null">
+                and iconUrl=#{iconUrl}
+            </if>
+            <if test="createdTime != null">
+                and createdTime=#{createdTime}
+            </if>
+            <if test="email != null">
+                and email=#{email}
+            </if>
+            <if test="enabled != null">
+                and enabled=#{enabled}
+            </if>
+        </where>
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from User
         where id = #{id,jdbcType=INTEGER}

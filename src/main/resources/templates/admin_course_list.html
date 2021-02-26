@@ -3,10 +3,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/elementUI.css}">
+    <script th:src="@{/js/vue.js}"></script>
+    <script th:src="@{/js/elementUI.js}"></script>
     <title>类别列表</title>
 </head>
 <body>
+
+
 <table class="table table-striped  table-bordered table-hover">
+    <div th:value="${success}" style="display: none" id="app" th:label="${msg}"></div>
     <tr>
         <th>课程名称</th>
         <th>课程描述</th>
@@ -17,19 +23,57 @@
         <th>操作</th>
     </tr>
 
-        <tr th:each="course:${courses}">
-            <td th:text="${course.name}"></td>
-            <td th:text="${course.description}"></td>
-            <td><img th:src="@{/img/getImage(imgPath=${course.imgUrl})}" alt="error" width="200px"></td>
-            <td th:text="${#dates.format(course.createdTime, 'yyyy-MM-dd hh:mm:ss')}"></td>
-            <td th:text="${course.createUserId}"></td>
-            <td th:text="${course.enabled}"></td>
-            <td>
-                <a class="btn btn-primary" href="${pageContext.request.contextPath}/typeToUpdateServlet?type_id=${type.typeId}">编辑
-                </a>
-                <a class="btn btn-danger" href="${pageContext.request.contextPath}/typeDeleteServlet?type_id=${type.typeId}" onclick="return confirm('确认删除?')">删除</a>
-            </td>
-        </tr>
+    <tr th:each="course:${courses}">
+        <td th:text="${course.name}"></td>
+        <td th:text="${course.description}"></td>
+        <td><img th:src="@{/img/getImage(imgPath=${course.imgUrl})}" alt="error" width="200px"></td>
+        <td th:text="${#dates.format(course.createdTime, 'yyyy-MM-dd hh:mm:ss')}"></td>
+        <td th:text="${course.createUserId}"></td>
+        <td th:text="${course.enabled}"></td>
+        <td>
+            <a class="btn btn-primary"
+               th:href="@{/admin/updateCourse(id=${course.id})}">编辑
+            </a>
+            <a class="btn btn-danger"
+               th:href="@{/admin/deleteCourse(id=${course.id})}"
+               onclick="return confirm('确认删除?')">删除</a>
+        </td>
+    </tr>
 </table>
 </body>
+<script>
+    var vue = new Vue({
+        el: "#app",
+        data: {
+          msg: ""
+        },
+        methods: {
+            success() {
+                this.$notify({
+                    title: '成功',
+                    message: this.msg,
+                    type: 'success'
+                });
+            },
+
+            fail() {
+                this.$notify.error({
+                    title: '错误',
+                    message: this.msg
+                });
+            }
+        },
+        created: function (){
+            const tmp = document.getElementById("app").attributes["value"].value
+            console.log(tmp)
+            if (tmp == 1) {
+                this.msg = document.getElementById("app").attributes["label"].value
+                this.success();
+            }else if (tmp == 0){
+                this.msg = document.getElementById("app").attributes["label"].value
+                this.fail();
+            }
+        }
+    })
+</script>
 </html>

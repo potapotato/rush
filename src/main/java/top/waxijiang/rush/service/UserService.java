@@ -23,4 +23,17 @@ public interface UserService {
      * @return 用户对象
      */
     User findUserByUsername(String username);
+
+    /**
+     * 查询所有用户(可用的)
+     * @return 用户List
+     */
+    List<User> findAllUser();
+
+    /**
+     * 根据id查找用户
+     * @param userId 用户id
+     * @return 用户
+     */
+    User findUserById(Integer userId);
 }
