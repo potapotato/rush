@@ -22,13 +22,15 @@ public class Question implements Serializable {
 
     private Integer score;
 
-    private Integer type;
+    private Integer questionTypeId;
 
     private Date createdTime;
 
     private Integer createUserId;
 
     private Boolean enabled;
+
+    private Integer courseId;
 
     private static final long serialVersionUID = 1L;
 
@@ -88,12 +90,12 @@ public class Question implements Serializable {
         this.score = score;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getQuestionTypeId() {
+        return questionTypeId;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setQuestionTypeId(Integer questionTypeId) {
+        this.questionTypeId = questionTypeId;
     }
 
     public Date getCreatedTime() {
@@ -120,6 +122,14 @@ public class Question implements Serializable {
         this.enabled = enabled;
     }
 
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -139,10 +149,11 @@ public class Question implements Serializable {
             && (this.getAnswerUrl() == null ? other.getAnswerUrl() == null : this.getAnswerUrl().equals(other.getAnswerUrl()))
             && (this.getAnswerText() == null ? other.getAnswerText() == null : this.getAnswerText().equals(other.getAnswerText()))
             && (this.getScore() == null ? other.getScore() == null : this.getScore().equals(other.getScore()))
-            && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
+            && (this.getQuestionTypeId() == null ? other.getQuestionTypeId() == null : this.getQuestionTypeId().equals(other.getQuestionTypeId()))
             && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
             && (this.getCreateUserId() == null ? other.getCreateUserId() == null : this.getCreateUserId().equals(other.getCreateUserId()))
-            && (this.getEnabled() == null ? other.getEnabled() == null : this.getEnabled().equals(other.getEnabled()));
+            && (this.getEnabled() == null ? other.getEnabled() == null : this.getEnabled().equals(other.getEnabled()))
+            && (this.getCourseId() == null ? other.getCourseId() == null : this.getCourseId().equals(other.getCourseId()));
     }
 
     @Override
@@ -156,10 +167,11 @@ public class Question implements Serializable {
         result = prime * result + ((getAnswerUrl() == null) ? 0 : getAnswerUrl().hashCode());
         result = prime * result + ((getAnswerText() == null) ? 0 : getAnswerText().hashCode());
         result = prime * result + ((getScore() == null) ? 0 : getScore().hashCode());
-        result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
+        result = prime * result + ((getQuestionTypeId() == null) ? 0 : getQuestionTypeId().hashCode());
         result = prime * result + ((getCreatedTime() == null) ? 0 : getCreatedTime().hashCode());
         result = prime * result + ((getCreateUserId() == null) ? 0 : getCreateUserId().hashCode());
         result = prime * result + ((getEnabled() == null) ? 0 : getEnabled().hashCode());
+        result = prime * result + ((getCourseId() == null) ? 0 : getCourseId().hashCode());
         return result;
     }
 
@@ -176,10 +188,11 @@ public class Question implements Serializable {
         sb.append(", answerUrl=").append(answerUrl);
         sb.append(", answerText=").append(answerText);
         sb.append(", score=").append(score);
-        sb.append(", type=").append(type);
+        sb.append(", questionTypeId=").append(questionTypeId);
         sb.append(", createdTime=").append(createdTime);
         sb.append(", createUserId=").append(createUserId);
         sb.append(", enabled=").append(enabled);
+        sb.append(", courseId=").append(courseId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

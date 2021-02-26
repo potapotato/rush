@@ -31,6 +31,12 @@ public class ImageController {
     @Value("${custom.courseImagePath}")
     private String courseImagePath;
 
+    @Value("${custom.questionImagePath}")
+    private String questionImagePath;
+
+    @Value("${custom.answerImagePath}")
+    private String answerImagePath;
+
     /**
      * 根据相对路径获取图片
      *
@@ -136,6 +142,72 @@ public class ImageController {
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("课程图片上传失败!");
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 上传题目
+     *
+     * @param icon    图片对象 MultipartFile
+     * @param request HttpServletRequest对象
+     * @return 图片的url地址
+     */
+    @PostMapping("uploadQuestionImage")
+    @ResponseBody
+    public String uploadQuestionImage(MultipartFile icon, HttpServletRequest request) {
+        if (icon != null) {
+            try {
+                String parentPath = questionImagePath;
+                InputStream inputStream = icon.getInputStream();
+                String filename = SecureUtil.md5(inputStream);
+                String[] split = icon.getOriginalFilename().split("\\.");
+                filename += "." + split[split.length - 1];
+                File file = new File(parentPath, filename);
+                if (!file.exists()) {
+                    icon.transferTo(file);
+                }
+                // todo: 硬编码问题
+                return "questionImages/question/" + filename;
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("题目图片上传失败!");
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 上传题目
+     *
+     * @param icon    图片对象 MultipartFile
+     * @param request HttpServletRequest对象
+     * @return 图片的url地址
+     */
+    @PostMapping("uploadAnswerImage")
+    @ResponseBody
+    public String uploadAnswerImage(MultipartFile icon, HttpServletRequest request) {
+        if (icon != null) {
+            try {
+                String parentPath = answerImagePath;
+                InputStream inputStream = icon.getInputStream();
+                String filename = SecureUtil.md5(inputStream);
+                String[] split = icon.getOriginalFilename().split("\\.");
+                filename += "." + split[split.length - 1];
+                File file = new File(parentPath, filename);
+                if (!file.exists()) {
+                    icon.transferTo(file);
+                }
+                // todo: 硬编码问题
+                return "questionImages/answer/" + filename;
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("答案图片上传失败!");
                 return null;
             }
         } else {

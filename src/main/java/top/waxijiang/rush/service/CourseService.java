@@ -51,4 +51,10 @@ public interface CourseService {
      * @return 是否成功
      */
     boolean updateCourse(String name, String desc, String imgUrl,String enabled, String id);
+
+    /**
+     *  获取所有可用科目
+     * @return Course List
+     */
+    List<Course> findAllCourse();
 }

@@ -22,4 +22,6 @@ public interface CourseDao {
     int updateByPrimaryKey(Course record);
 
     List<Course> selectAll();
+
+    List<Course> selectAllEnabled();
 }

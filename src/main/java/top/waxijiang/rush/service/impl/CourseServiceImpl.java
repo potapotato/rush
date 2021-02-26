@@ -53,4 +53,9 @@ public class CourseServiceImpl implements CourseService {
         course.setEnabled("1".equals(enabled));
         return courseDao.updateByPrimaryKeySelective(course) > 0;
     }
+
+    @Override
+    public List<Course> findAllCourse() {
+        return courseDao.selectAllEnabled();
+    }
 }
