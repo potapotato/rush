@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.waxijiang.rush.dao.QuestionDao">
+  <resultMap id="BaseResultMap" type="top.waxijiang.rush.entity.Question">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="section_id" jdbcType="INTEGER" property="sectionId" />
+    <result column="question_url" jdbcType="VARCHAR" property="questionUrl" />
+    <result column="question_text" jdbcType="VARCHAR" property="questionText" />
+    <result column="answer_url" jdbcType="VARCHAR" property="answerUrl" />
+    <result column="answer_text" jdbcType="VARCHAR" property="answerText" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
+    <result column="enabled" jdbcType="BOOLEAN" property="enabled" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, section_id, question_url, question_text, answer_url, answer_text, score, `type`, 
+    created_time, create_user_id, enabled
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Question
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Question
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="top.waxijiang.rush.entity.Question" useGeneratedKeys="true">
+    insert into Question (section_id, question_url, question_text, 
+      answer_url, answer_text, score, 
+      `type`, created_time, create_user_id, 
+      enabled)
+    values (#{sectionId,jdbcType=INTEGER}, #{questionUrl,jdbcType=VARCHAR}, #{questionText,jdbcType=VARCHAR}, 
+      #{answerUrl,jdbcType=VARCHAR}, #{answerText,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER}, 
+      #{enabled,jdbcType=BOOLEAN})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="top.waxijiang.rush.entity.Question" useGeneratedKeys="true">
+    insert into Question
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sectionId != null">
+        section_id,
+      </if>
+      <if test="questionUrl != null">
+        question_url,
+      </if>
+      <if test="questionText != null">
+        question_text,
+      </if>
+      <if test="answerUrl != null">
+        answer_url,
+      </if>
+      <if test="answerText != null">
+        answer_text,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="createUserId != null">
+        create_user_id,
+      </if>
+      <if test="enabled != null">
+        enabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sectionId != null">
+        #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="questionUrl != null">
+        #{questionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="questionText != null">
+        #{questionText,jdbcType=VARCHAR},
+      </if>
+      <if test="answerUrl != null">
+        #{answerUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="answerText != null">
+        #{answerText,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=BOOLEAN},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="top.waxijiang.rush.entity.Question">
+    update Question
+    <set>
+      <if test="sectionId != null">
+        section_id = #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="questionUrl != null">
+        question_url = #{questionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="questionText != null">
+        question_text = #{questionText,jdbcType=VARCHAR},
+      </if>
+      <if test="answerUrl != null">
+        answer_url = #{answerUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="answerText != null">
+        answer_text = #{answerText,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null">
+        enabled = #{enabled,jdbcType=BOOLEAN},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="top.waxijiang.rush.entity.Question">
+    update Question
+    set section_id = #{sectionId,jdbcType=INTEGER},
+      question_url = #{questionUrl,jdbcType=VARCHAR},
+      question_text = #{questionText,jdbcType=VARCHAR},
+      answer_url = #{answerUrl,jdbcType=VARCHAR},
+      answer_text = #{answerText,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=INTEGER},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      enabled = #{enabled,jdbcType=BOOLEAN}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -4,9 +4,12 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.waxijiang.rush.dao.UserDao;
+import top.waxijiang.rush.entity.Role;
 import top.waxijiang.rush.entity.User;
 import top.waxijiang.rush.service.UserService;
 import top.waxijiang.rush.utils.SaltUtils;
+
+import java.util.List;
 
 /**
  * @author waxijiang

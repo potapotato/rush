@@ -1,0 +1,35 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <title>类别列表</title>
+</head>
+<body>
+<table class="table table-striped  table-bordered table-hover">
+    <tr>
+        <th>课程名称</th>
+        <th>课程描述</th>
+        <th>课程封面</th>
+        <th>创建时间</th>
+        <th>创建用户id</th>
+        <th>可用状态</th>
+        <th>操作</th>
+    </tr>
+
+        <tr th:each="course:${courses}">
+            <td th:text="${course.name}"></td>
+            <td th:text="${course.description}"></td>
+            <td><img th:src="@{/img/getImage(imgPath=${course.imgUrl})}" alt="error" width="200px"></td>
+            <td th:text="${#dates.format(course.createdTime, 'yyyy-MM-dd hh:mm:ss')}"></td>
+            <td th:text="${course.createUserId}"></td>
+            <td th:text="${course.enabled}"></td>
+            <td>
+                <a class="btn btn-primary" href="${pageContext.request.contextPath}/typeToUpdateServlet?type_id=${type.typeId}">编辑
+                </a>
+                <a class="btn btn-danger" href="${pageContext.request.contextPath}/typeDeleteServlet?type_id=${type.typeId}" onclick="return confirm('确认删除?')">删除</a>
+            </td>
+        </tr>
+</table>
+</body>
+</html>

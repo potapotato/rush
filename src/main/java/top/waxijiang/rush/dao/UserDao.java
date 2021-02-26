@@ -2,7 +2,10 @@ package top.waxijiang.rush.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+import top.waxijiang.rush.entity.Role;
 import top.waxijiang.rush.entity.User;
+
+import java.util.List;
 
 @Repository
 @Mapper

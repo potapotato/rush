@@ -1,6 +1,9 @@
 package top.waxijiang.rush.service;
 
+import top.waxijiang.rush.entity.Role;
 import top.waxijiang.rush.entity.User;
+
+import java.util.List;
 
 /**
  * @author waxijiang

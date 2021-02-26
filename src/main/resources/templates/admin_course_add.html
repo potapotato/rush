@@ -1,0 +1,69 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/layui.css}">
+    <script th:src="@{/js/layui.all.js}"></script>
+    <title>科目添加</title>
+    <style>
+        .wrapper{
+            width: 500px;
+            height: 400px;
+            margin: 100px auto;
+
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <form action="${pageContext.request.contextPath}/typeAddServlet" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">科目名称</label>
+                <div class="layui-input-block">
+                  <input type="text" onchange="changeText()" name="title" lay-verify="title" autocomplete="off" placeholder="请输入课程名称" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">科目描述</label>
+                <div class="layui-input-block">
+                  <textarea placeholder="请输入内容" name="desc" class="layui-textarea" onchange="changeText()" ></textarea>
+                </div>
+              </div>
+              <div style="width: 216px; margin: 0 160px;">
+                <button type="submit" class="layui-btn layui-btn-fluid layui-btn-disabled" onclick="return check()">创建
+                </button>
+              </div>
+        </form>
+    </div>
+</body>
+<script>
+function changeText(){
+    // title = document.getElementById("main").contentWindow.document.getElementsByName("title")[0].innerText
+    // desc = document.getElementById("main").contentWindow.document.getElementsByName("desc")[0].innerText
+    title = document.getElementsByName("title")[0].value;
+    desc = document.getElementsByName("desc")[0].value;
+    if (title !== "" && desc !== ""){
+        document.getElementsByTagName("button")[0].className = "layui-btn layui-btn-fluid"
+    }else{
+        document.getElementsByTagName("button")[0].className = "layui-btn layui-btn-fluid layui-btn-disabled"
+    }
+}
+
+function check(){
+    title = document.getElementsByName("title")[0].value;
+    desc = document.getElementsByName("desc")[0].value;
+    if (title.length >= 16){
+        alert("类别名称过长！")
+        return false
+    }else if(desc.length >= 40){
+        alert("类别描述过长!")
+        return false
+    }else if (title.length === 0 || desc.length === 0){
+        alert("请输入必填项!")
+        return false
+    }else {
+        return true
+    }
+}
+</script>
+</html>
