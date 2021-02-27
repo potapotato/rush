@@ -37,7 +37,7 @@ public class IndexController {
 
     @RequestMapping("")
     public String toIndex(Model model) {
-        model.addAttribute("courses", courseService.getAllCourse());
+        model.addAttribute("courses", courseService.findAllCourse());
         return "index";
     }
 
@@ -82,5 +82,10 @@ public class IndexController {
     @GetMapping("login")
     public String toLogin() {
         return "login";
+    }
+
+    @GetMapping("refuse")
+    public String refuse(){
+        return "refuse";
     }
 }

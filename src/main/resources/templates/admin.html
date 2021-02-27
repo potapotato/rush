@@ -11,7 +11,7 @@
         <div class="layui-logo">个人题库后台管理系统</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="">返回网站前台</a></li>
+            <li class="layui-nav-item"><a href="/">返回网站前台</a></li>
 <!--            <li class="layui-nav-item"><a href="">用户</a></li>-->
 <!--            <li class="layui-nav-item">-->
 <!--                <a href="javascript:;">其它系统</a>-->
@@ -25,7 +25,7 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    <img th:src="@{/img/getImage(imgPath=${session.user.iconUrl})}" class="layui-nav-img">
                     <span shiro:principal property="nickname"></span>
                 </a>
                 <dl class="layui-nav-child">

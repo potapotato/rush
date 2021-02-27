@@ -24,4 +24,14 @@ public interface QuestionService {
      * @param id 题目ｉｄ
      */
     boolean deleteById(String id);
+
+    /**
+     * 通过ｉｄ查询题目
+     * @param id 题目id
+     * @return Question对象
+     */
+    Question findQuestionById(String id);
+
+
+    boolean updateQuestion(String id, String courseId, String questionText, String questionTrueImageUrl, String answerText, String answerTrueImageUrl, String score, String typeId, String userId, String enabled);
 }

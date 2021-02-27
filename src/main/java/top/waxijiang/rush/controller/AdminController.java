@@ -1,12 +1,11 @@
 package top.waxijiang.rush.controller;
 
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import top.waxijiang.rush.entity.Course;
 import top.waxijiang.rush.entity.Question;
 import top.waxijiang.rush.entity.QuestionType;
@@ -153,6 +152,41 @@ public class AdminController {
         } else {
             model.addAttribute("success", 0);
             model.addAttribute("msg", "添加失败,内部错误!");
+        }
+        List<Question> questions = questionService.findAllQuestion();
+        List<QuestionVo> questionVos = new ArrayList<>();
+        for (Question question : questions) {
+            QuestionVo questionVo = new QuestionVo();
+            questionVo.setQuestion(question);
+            questionVo.setCourseName(courseService.findCourseById(String.valueOf(question.getCourseId())).getName());
+            questionVos.add(questionVo);
+        }
+        model.addAttribute("questionVos", questionVos);
+        return "admin_question_list";
+    }
+
+    @GetMapping("/updateQuestion")
+    public String toUpdateQuestion(String id, Model model) {
+        Question question = questionService.findQuestionById(id);
+        model.addAttribute("question", question);
+        List<Course> courses = courseService.findAllCourse();
+        model.addAttribute("courses", courses);
+        List<QuestionType> types = questionTypeService.findAllType();
+        model.addAttribute("types", types);
+        List<User> users = userService.findAllUser();
+        model.addAttribute("users", users);
+        return "admin_question_modify";
+    }
+
+    @PostMapping("/updateQuestion")
+    public String updateQuestion(Model model, String id,String courseId, String questionText, String questionTrueImageUrl, String answerText, String answerTrueImageUrl, String score, String typeId, String userId, String enabled) {
+        boolean b = questionService.updateQuestion(id, courseId, questionText, questionTrueImageUrl, answerText, answerTrueImageUrl, score, typeId, userId, enabled);
+        if (b) {
+            model.addAttribute("success", 1);
+            model.addAttribute("msg", "修改成功!");
+        } else {
+            model.addAttribute("success", 0);
+            model.addAttribute("msg", "修改失败,内部错误!");
         }
         List<Question> questions = questionService.findAllQuestion();
         List<QuestionVo> questionVos = new ArrayList<>();

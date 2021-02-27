@@ -1,0 +1,245 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{/css/elementUI.css}">
+    <script th:src="@{/js/vue.js}"></script>
+    <script th:src="@{/js/elementUI.js}"></script>
+    <style type="text/css">
+        #container {
+            width: 600px;
+            height: 400px;
+            margin: 50px auto;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <form class="layui-form" th:action="@{/admin/updateQuestion}" method="post" id="upload">
+        <input type="hidden" name="id" th:value="${question.getId()}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">所属科目</label>
+            <div class="layui-input-block">
+                <select name="courseId">
+                    <option th:value="${course.id}" th:each="course:${courses}" th:text="${course.name}"
+                            th:selected="${course.getId()==question.getCourseId()}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">题目</label>
+            <div class="layui-input-block">
+                <textarea name="questionText" placeholder="请输入题目" class="layui-textarea" th:text="${question.getQuestionText()}"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">题目图片</label>
+            <div class="layui-input-block">
+                <div>
+                    <el-upload
+                            class="avatar-uploader"
+                            th:action="@{/img/uploadQuestionImage}"
+                            :show-file-list="false"
+                            :on-success="questionHandleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload"
+                            name="icon">
+                        <div th:value="${question.questionUrl}" id="questionUrl"></div>
+                        <img v-if="questionImageUrl" :src="questionImageUrl" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                    <input type="hidden" name="questionTrueImageUrl" :value="questionTrueImageUrl">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">答案</label>
+            <div class="layui-input-block">
+                <textarea name="answerText" placeholder="请输入答案" class="layui-textarea" th:text="${question.answerText}"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">答案图片</label>
+            <div class="layui-input-block">
+                <div>
+                    <el-upload
+                            class="avatar-uploader"
+                            th:action="@{/img/uploadAnswerImage}"
+                            :show-file-list="false"
+                            :on-success="answerHandleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload"
+                            name="icon">
+                        <div th:value="${question.answerUrl}" id="answerUrl"></div>
+                        <img v-if="answerImageUrl" :src="answerImageUrl" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                    <input type="hidden" name="answerTrueImageUrl" :value="answerTrueImageUrl">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">所占分值</label>
+            <div class="layui-input-block">
+                <input type="number" name="score" placeholder="请输入题目所占分值" class="layui-input" th:value="${question.getScore()}"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">题目类型</label>
+            <div class="layui-input-block">
+                <select name="typeId">
+                    <option th:value="${type.id}" th:text="${type.name}" th:each="type:${types}"
+                            th:selected="${type.getId()==question.getQuestionTypeId()}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所属用户</label>
+            <div class="layui-input-block">
+                <select name="userId">
+                    <option th:value="${user.id}" th:text="${user.nickname}" th:each="user:${users}"
+                            th:selected="${user.getId()==question.getCreateUserId()}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否可用</label>
+            <div class="layui-input-block">
+                <input type="checkbox" th:checked="${question.getEnabled()}" name="enabled" lay-skin="switch"
+                       lay-filter="switchTest"
+                       lay-text="ON|OFF">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item" style="margin-top: 20px;">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo" onclick="return check()">立即提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+    layui.use(['element', 'form'], function () {
+        var element = layui.element;
+        var form = layui.form;
+    });
+
+    function check() {
+        var goods_name = document.getElementsByName("courseId")[0].value
+        var goods_price = document.getElementsByName("questionTrueImageUrl")[0].value
+        var goods_img = document.getElementsByName("answerTrueImageUrl")[0].value
+        var goods_num = document.getElementsByName("score")[0].value
+        var goods_desc = document.getElementsByName("typeId")[0].value
+        if (goods_name === "") {
+            alert("所属科目不能为空！")
+            return false
+        } else if (goods_price === "") {
+            alert("题目图片不能为空!")
+            return false;
+        } else if (goods_img === "") {
+            alert("答案图片不能为空!")
+            return false
+        } else if (goods_num === "") {
+            alert("请输入分值!")
+            return false
+        } else if (goods_desc === "") {
+            alert("题目所属类型不能为空!")
+            return false
+        } else {
+            return true
+        }
+    }
+</script>
+<script>
+    var vue = new Vue({
+        el: "#upload",
+        data: function () {
+            return {
+                questionImageUrl: "",
+                questionTrueImageUrl: "",
+                answerImageUrl: "",
+                answerTrueImageUrl: ""
+            }
+        },
+        created: function () {
+            this.questionImageUrl = "/img/getImage?imgPath=" + document.getElementById("questionUrl").attributes["value"].value
+            this.questionTrueImageUrl = document.getElementById("questionUrl").attributes["value"].value
+            this.answerImageUrl = "/img/getImage?imgPath=" + document.getElementById("answerUrl").attributes["value"].value
+            this.answerTrueImageUrl = document.getElementById("answerUrl").attributes["value"].value
+        },
+        methods: {
+            questionHandleAvatarSuccess(res, file) {
+                this.questionTrueImageUrl = res;
+                this.questionImageUrl = URL.createObjectURL(file.raw);
+            },
+            answerHandleAvatarSuccess(res, file) {
+                this.answerTrueImageUrl = res;
+                this.answerImageUrl = URL.createObjectURL(file.raw);
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isPNG = file.type === 'image/png';
+                const isLt5M = file.size / 1024 / 1024 < 5;
+
+                if (!isJPG && !isPNG) {
+                    this.$message.error('上传图片只能是 JPG 或者　PNG 格式!');
+                }
+                if (!isLt5M) {
+                    this.$message.error('上传图片大小不能超过 5MB!');
+                }
+                return (isJPG || isPNG) && isLt5M;
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -27,7 +27,7 @@ public class ShiroConfig {
         // 配置登录页面
         shiroFilterFactoryBean.setLoginUrl("/login");
         // 未授权界面
-        shiroFilterFactoryBean.setUnauthorizedUrl("/index");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/refuse");
         // 配置不被拦截页面和拦截界面
         Map<String, String> map = new LinkedHashMap<>();
         // 注意顺序, /**必须在最后
@@ -41,6 +41,8 @@ public class ShiroConfig {
         map.put("/login", "anon");
         map.put("/register", "anon");
         map.put("/login.html", "anon");
+        map.put("/refuse.html", "anon");
+        map.put("/refuse", "anon");
         map.put("/", "anon");
         map.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);

@@ -38,7 +38,7 @@
         <td th:text="${questionVo.getQuestion().getEnabled()}"></td>
         <td>
             <a class="btn btn-success"
-               href="${pageContext.request.contextPath}/goodsToUpdateServlet?goods_id=${goods.goodsId}"><span
+               th:href="@{/admin/updateQuestion(id=${questionVo.getQuestion().getId()})}"><span
                     class="el-icon-edit"></span>&nbsp修改</a>
             <a class="btn btn-danger"
                th:href="@{/admin/deleteQuestion(id=${questionVo.getQuestion().getId()})}"
