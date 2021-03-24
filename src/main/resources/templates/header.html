@@ -37,11 +37,13 @@
                 <ul class="my-2 my-md-0 navbar-nav" shiro:authenticated="" id="icon">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                            <img th:src="@{/img/getImage(imgPath=${session.user.iconUrl})}" style="border-radius: 50%" alt="" id="user_icon" width="40px">
+                            <img th:src="@{/img/getImage(imgPath=${session.user.iconUrl})}" style="border-radius: 50%"
+                                 alt="" id="user_icon" width="40px">
                             <span shiro:principal property="nickname"></span>
                         </a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="#">个人主页</a>
+                            <a class="dropdown-item" shiro:hasRole="admin" th:href="@{/admin/}">后台管理</a>
                             <a class="dropdown-item" th:href="@{/logout}">退出登录</a>
                         </div>
                     </li>
