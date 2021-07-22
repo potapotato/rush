@@ -47,55 +47,48 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">首页</a></li>
-                    <li class="breadcrumb-item active" th:text="${course.name}"></li>
-                </ol>
-            </div>
+<header th:insert="header::header"></header>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <img th:src="@{/img/getImage(imgPath=${course.imgUrl})}" alt="课程图片"
+                 class="rounded float-left course-img">
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <img th:src="@{/img/getImage(imgPath=${course.imgUrl})}" alt="课程图片"
-                    class="rounded float-left course-img">
+        <div class="col-md-6">
+            <div class="course-title">
+                <span class="course-title-text" th:text="${course.name}"></span>
             </div>
-            <div class="col-md-6">
-                <div class="course-title">
-                    <span class="course-title-text" th:text="${course.name}"></span>
-                </div>
-                <div class="course-owner">
-                    创建者: <span th:text="${course.createUserId}"></span>
-                </div>
-                <div class="course-info">
-                    <div class="course-info-header">
-                        <div class="course-info-header-createTime">
-                            创建时间：<span th:text="${course.createdTime}"></span>
-                        </div>
-                        <div class="course-info-header-chapterNum">
-                            章数目：<span>5</span>章
-                        </div>
-                        <div class="course-info-header-sectionNum">
-                            节数目：<span>12</span>节
-                        </div>
-                        <div class="course-info-header-questionNum">
-                            题目数：<span>122</span>道
-                        </div>
-                        <div class="course-info-header-status">
-                            访问权限：开放
-                        </div>
+            <div class="course-owner">
+                创建者: <span th:text="${course.createUserId}"></span>
+            </div>
+            <div class="course-info">
+                <div class="course-info-header">
+                    <div class="course-info-header-createTime">
+                        创建时间：<span th:text="${course.createdTime}"></span>
                     </div>
-                    <div class="course-info-bottom d-flex justify-content-between align-items-center">
-                        <button type="button" class="btn btn-success btn-lg">贡献题目</button>
-                        <button type="button" class="btn btn-info btn-lg">贡献资料</button>
-                        <button type="button" class="btn btn-warning btn-lg">管理题库</button>
-                        <button type="button" class="btn btn-danger btn-lg">删除题库</button>
+                    <div class="course-info-header-chapterNum">
+                        章数目：<span>5</span>章
                     </div>
+                    <div class="course-info-header-sectionNum">
+                        节数目：<span>12</span>节
+                    </div>
+                    <div class="course-info-header-questionNum">
+                        题目数：<span>122</span>道
+                    </div>
+                    <div class="course-info-header-status">
+                        访问权限：开放
+                    </div>
+                </div>
+                <div class="course-info-bottom d-flex justify-content-between align-items-center">
+                    <button type="button" class="btn btn-success btn-lg">贡献题目</button>
+                    <button type="button" class="btn btn-info btn-lg">贡献资料</button>
+                    <button type="button" class="btn btn-warning btn-lg">管理题库</button>
+                    <button type="button" class="btn btn-danger btn-lg">删除题库</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </body>
 
 </html>
