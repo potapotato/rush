@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>加油鸭</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/panel.css">
+    <link rel="stylesheet" href="../static/css/elementUI.css">
+    <style>
+        hr {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12">
+            <ul class="list-group list-group-horizontal text-center" style="justify-content: center;margin-top: 20px;">
+                <li class="list-group-item active">总题数: 12</li>
+                <li class="list-group-item">已过题数: 1</li>
+            </ul>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-8 offset-2">
+            <div class="panel panel-default card-front">
+                <div class="panel-body">
+                    <div class="alignContainer">
+                        <div class="alignMiddle frontText">
+                            <h3 class="text-center">度量数据离散度的度量有哪些？分别代表什么含义？</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-primary card-back hidden">
+                <div class="panel-body">
+                    <div class="alignContainer">
+                        <div class="alignMiddle backText">
+                            <h3 class="text-center">提高数据质量，提高数据挖掘效果，提高挖掘效率，满足应用要求。</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12 text-center">
+            <a href="javascript:" class="btn btn-warning btn-lg flipCard" onclick="change()">
+                <i class="el-icon-view"></i>
+                两级反转
+            </a>
+            &nbsp;
+            &nbsp;
+            <a href="/mark_known/55/general" class="btn btn-success btn-lg">
+                <i class="el-icon-check" aria-hidden="true"></i>
+                这个简单
+            </a>
+            &nbsp;
+            &nbsp;
+            <a href="/general" class="btn btn-primary btn-lg">
+                太难换个
+                <i class="el-icon-d-arrow-right" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
+
+</div>
+</body>
+<script>
+    function change() {
+        if (document.getElementsByClassName("card-front")[0]["classList"].value === "card-front hidden") {
+            document.getElementsByClassName("card-front")[0]["classList"].value = "panel panel-default card-front"
+            document.getElementsByClassName("card-back")[0]["classList"].value = "card-back hidden"
+        } else {
+            document.getElementsByClassName("card-back")[0]["classList"].value = "panel panel-primary card-back"
+            document.getElementsByClassName("card-front")[0]["classList"].value = "card-front hidden"
+        }
+    }
+
+
+</script>
+</html>

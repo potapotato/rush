@@ -1,0 +1,33 @@
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.panel-default {
+    border-color: #dddddd;
+}
+
+.panel-primary {
+    border-color: #337ab7;
+}
+
+.panel-body {
+    padding: 15px;
+}
+
+.alignContainer {
+    display: table;
+    width: 100%;
+}
+
+.alignMiddle {
+    height: 20em;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.hidden {
+    display: none;
+}
