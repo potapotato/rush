@@ -5,23 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>冲鸭~(～￣▽￣)～</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/js/bootstrap.min.js}">
-    <!--    <link rel="shortcut icon" th:href="@{icon/duck.ico}">-->
     <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
     <style>
         .course-img {
             width: 510px;
             height: 288px;
         }
 
+        .course-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
         .course-title-text {
             font-size: 24px;
-            color: #333333;
+            color: rgb(0, 150, 136);
             margin-right: 6px;
         }
 
         .course-info {
-            margin-top: 10px;
+            margin-top: 30px;
         }
 
         .course-info-header {
@@ -43,12 +48,17 @@
             display: flex;
             justify-content: space-between;
         }
+
+        .title-text {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
 <body>
 <header th:insert="header::header"></header>
-<div class="container">
+<div class="container py-3">
     <div class="row">
         <div class="col-md-6">
             <img th:src="@{/img/getImage(imgPath=${course.imgUrl})}" alt="课程图片"
@@ -56,8 +66,10 @@
         </div>
         <div class="col-md-6">
             <div class="course-title">
-                <span class="course-title-text" th:text="${course.name}"></span>
+                <div class="course-title-text" th:text="${course.name}"></div>
+                <button type="button" class="btn btn-info">管理题库</button>
             </div>
+            <hr>
             <div class="course-owner">
                 创建者: <span th:text="${course.createUserId}"></span>
             </div>
@@ -79,13 +91,85 @@
                         访问权限：开放
                     </div>
                 </div>
-                <div class="course-info-bottom d-flex justify-content-between align-items-center">
-                    <button type="button" class="btn btn-success btn-lg">贡献题目</button>
-                    <button type="button" class="btn btn-info btn-lg">贡献资料</button>
-                    <button type="button" class="btn btn-warning btn-lg">管理题库</button>
-                    <button type="button" class="btn btn-danger btn-lg">删除题库</button>
+                <!--                <div class="course-info-bottom d-flex justify-content-between align-items-center">-->
+                <!--                    <button type="button" class="btn btn-success btn-lg">贡献题目</button>-->
+                <!--                    <button type="button" class="btn btn-info btn-lg">贡献资料</button>-->
+                <!--                    <button type="button" class="btn btn-warning btn-lg">管理题库</button>-->
+                <!--                    <button type="button" class="btn btn-danger btn-lg">删除题库</button>-->
+                <!--                </div>-->
+            </div>
+        </div>
+    </div>
+    <div class="row py-5">
+        <div class="col-md-6">
+            <div class="title-text" style="color: rgb(201,97,245)">章节列表</div>
+            <hr>
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                                    data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                第一章：集合
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                         data-parent="#accordionExample">
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">An item</li>
+                                <li class="list-group-item">A second item</li>
+                                <li class="list-group-item">A third item</li>
+                                <li class="list-group-item">A fourth item</li>
+                                <li class="list-group-item">And a fifth one</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button"
+                                    data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+                                    aria-controls="collapseTwo">
+                                第二章：数列极限
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                            数列极限就是数列极限啦
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button"
+                                    data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
+                                    aria-controls="collapseThree">
+                                第三章：函数极限
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                         data-parent="#accordionExample">
+                        <div class="card-body">
+                            函数极限就是函数极限啦
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="col-md-6">
+            <div class="title-text" style="color: rgb(220,53,69)">操作</div>
+            <hr>
+            <button type="button" class="btn btn-primary btn-block btn-lg">随机刷题</button>
+            <button type="button" class="btn btn-warning btn-block btn-lg">按章节随机刷题</button>
+            <button type="button" class="btn btn-success btn-block btn-lg">导出题库</button>
+            <button type="button" class="btn btn-dark btn-block btn-lg">查看题库</button>
         </div>
     </div>
 </div>
