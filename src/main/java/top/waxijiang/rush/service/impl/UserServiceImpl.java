@@ -1,5 +1,8 @@
 package top.waxijiang.rush.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,7 @@ import java.util.Map;
  * @author waxijiang
  */
 @Service("userService")
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserService {
     private final UserDao userDao;
 
     public UserServiceImpl(UserDao userDao) {
@@ -40,9 +43,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAllUser() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("enabled", true);
-        List<User> users = userDao.selectByCondition(map);
+        QueryWrapper<User> map = new QueryWrapper<User>().eq("enabled", true);
+        List<User> users = userDao.selectList(map);
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
             user.setPassword(null);
@@ -53,6 +55,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(Integer userId) {
-        return userDao.selectByPrimaryKey(userId);
+        return userDao.selectById(userId);
     }
 }

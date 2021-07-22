@@ -1,11 +1,14 @@
 package top.waxijiang.rush.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
 /**
  * Permission
  * @author 
  */
+@TableName("Permission")
 public class Permission implements Serializable {
     private Integer id;
 

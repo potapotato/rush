@@ -1,11 +1,14 @@
 package top.waxijiang.rush.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
 /**
  * Role
  * @author 
  */
+@TableName("Role")
 public class Role implements Serializable {
     private Integer id;
 

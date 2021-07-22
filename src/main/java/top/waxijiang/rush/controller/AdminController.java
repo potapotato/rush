@@ -1,8 +1,6 @@
 package top.waxijiang.rush.controller;
 
-import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,17 +24,20 @@ import java.util.List;
 @RequestMapping("admin")
 @RequiresRoles("admin")
 public class AdminController {
-    @Autowired
-    private CourseService courseService;
+    private final CourseService courseService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private QuestionService questionService;
+    private final QuestionService questionService;
 
-    @Autowired
-    private QuestionTypeService questionTypeService;
+    private final QuestionTypeService questionTypeService;
+
+    public AdminController(CourseService courseService, UserService userService, QuestionService questionService, QuestionTypeService questionTypeService) {
+        this.courseService = courseService;
+        this.userService = userService;
+        this.questionService = questionService;
+        this.questionTypeService = questionTypeService;
+    }
 
     @GetMapping("/")
     public String index() {
@@ -57,7 +58,12 @@ public class AdminController {
 
     @PostMapping("/addCourse")
     public String addCourse(String name, String desc, String createUserId, String imgUrl, Model model) {
-        boolean b = courseService.addCourse(name, desc, createUserId, imgUrl);
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(desc);
+        course.setCreateUserId(Integer.valueOf(createUserId));
+        course.setImgUrl(imgUrl);
+        boolean b = courseService.save(course);
         if (b) {
             model.addAttribute("success", 1);
             model.addAttribute("msg", "添加成功!");
@@ -65,21 +71,21 @@ public class AdminController {
             model.addAttribute("success", 0);
             model.addAttribute("msg", "添加失败，内部错误!");
         }
-        List<Course> courses = courseService.getAllCourse();
+        List<Course> courses = courseService.list();
         model.addAttribute("courses", courses);
         return "admin_course_list";
     }
 
     @GetMapping("/listCourse")
     public String listCourse(Model model) {
-        List<Course> courses = courseService.getAllCourse();
+        List<Course> courses = courseService.list();
         model.addAttribute("courses", courses);
         return "admin_course_list";
     }
 
     @GetMapping("/deleteCourse")
     public String deleteCourse(String id, Model model) {
-        boolean b = courseService.deleteCourseById(id);
+        boolean b = courseService.removeById(id);
         if (b) {
             model.addAttribute("success", 1);
             model.addAttribute("msg", "删除成功!");
@@ -87,14 +93,14 @@ public class AdminController {
             model.addAttribute("success", 0);
             model.addAttribute("msg", "删除失败,内部错误!");
         }
-        List<Course> courses = courseService.getAllCourse();
+        List<Course> courses = courseService.list();
         model.addAttribute("courses", courses);
         return "admin_course_list";
     }
 
     @GetMapping("/updateCourse")
     public String toUpdateCourse(String id, Model model) {
-        Course course = courseService.findCourseById(id);
+        Course course = courseService.getById(id);
         Integer userId = course.getCreateUserId();
         User user = userService.findUserById(userId);
         model.addAttribute("username", user.getUsername());
@@ -104,7 +110,13 @@ public class AdminController {
 
     @PostMapping("/updateCourse")
     public String updateCourse(String name, String desc, String imgUrl, String id, String enabled, Model model) {
-        boolean b = courseService.updateCourse(name, desc, imgUrl, enabled, id);
+        Course course = new Course();
+        course.setId(Integer.valueOf(id));
+        course.setName(name);
+        course.setDescription(desc);
+        course.setImgUrl(imgUrl);
+        course.setEnabled("on".equals(enabled));
+        boolean b = courseService.updateById(course);
         if (b) {
             model.addAttribute("success", 1);
             model.addAttribute("msg", "修改成功!");
@@ -112,19 +124,19 @@ public class AdminController {
             model.addAttribute("success", 0);
             model.addAttribute("msg", "修改失败,内部错误!");
         }
-        List<Course> courses = courseService.getAllCourse();
+        List<Course> courses = courseService.list();
         model.addAttribute("courses", courses);
         return "admin_course_list";
     }
 
     @GetMapping("/listQuestion")
     public String toListQuestion(Model model) {
-        List<Question> questions = questionService.findAllQuestion();
+        List<Question> questions = questionService.list();
         List<QuestionVo> questionVos = new ArrayList<>();
         for (Question question : questions) {
             QuestionVo questionVo = new QuestionVo();
             questionVo.setQuestion(question);
-            questionVo.setCourseName(courseService.findCourseById(String.valueOf(question.getCourseId())).getName());
+            questionVo.setCourseName(courseService.getById(String.valueOf(question.getCourseId())).getName());
             questionVos.add(questionVo);
         }
         model.addAttribute("questionVos", questionVos);
@@ -133,9 +145,9 @@ public class AdminController {
 
     @GetMapping("/addQuestion")
     public String toAddQuestion(Model model) {
-        List<Course> courses = courseService.findAllCourse();
+        List<Course> courses = courseService.list();
         model.addAttribute("courses", courses);
-        List<QuestionType> types = questionTypeService.findAllType();
+        List<QuestionType> types = questionTypeService.list();
         model.addAttribute("types", types);
         List<User> users = userService.findAllUser();
         model.addAttribute("users", users);
@@ -145,7 +157,16 @@ public class AdminController {
 
     @PostMapping("/addQuestion")
     public String addQuestion(Model model, String courseId, String questionText, String questionTrueImageUrl, String answerText, String answerTrueImageUrl, String score, String typeId, String userId) {
-        boolean b = questionService.addQuestion(courseId, questionText, questionTrueImageUrl, answerText, answerTrueImageUrl, score, typeId, userId);
+        Question tmpQuestion = new Question();
+        tmpQuestion.setCourseId(Integer.valueOf(courseId));
+        tmpQuestion.setQuestionText(questionText);
+        tmpQuestion.setQuestionUrl(questionTrueImageUrl);
+        tmpQuestion.setAnswerText(answerText);
+        tmpQuestion.setAnswerUrl(answerTrueImageUrl);
+        tmpQuestion.setScore(Integer.valueOf(score));
+        tmpQuestion.setQuestionTypeId(Integer.valueOf(typeId));
+        tmpQuestion.setCreateUserId(Integer.valueOf(userId));
+        boolean b = questionService.save(tmpQuestion);
         if (b) {
             model.addAttribute("success", 1);
             model.addAttribute("msg", "添加成功!");
@@ -153,12 +174,12 @@ public class AdminController {
             model.addAttribute("success", 0);
             model.addAttribute("msg", "添加失败,内部错误!");
         }
-        List<Question> questions = questionService.findAllQuestion();
+        List<Question> questions = questionService.list();
         List<QuestionVo> questionVos = new ArrayList<>();
         for (Question question : questions) {
             QuestionVo questionVo = new QuestionVo();
             questionVo.setQuestion(question);
-            questionVo.setCourseName(courseService.findCourseById(String.valueOf(question.getCourseId())).getName());
+            questionVo.setCourseName(courseService.getById(String.valueOf(question.getCourseId())).getName());
             questionVos.add(questionVo);
         }
         model.addAttribute("questionVos", questionVos);
@@ -167,11 +188,11 @@ public class AdminController {
 
     @GetMapping("/updateQuestion")
     public String toUpdateQuestion(String id, Model model) {
-        Question question = questionService.findQuestionById(id);
+        Question question = questionService.getById(id);
         model.addAttribute("question", question);
-        List<Course> courses = courseService.findAllCourse();
+        List<Course> courses = courseService.list();
         model.addAttribute("courses", courses);
-        List<QuestionType> types = questionTypeService.findAllType();
+        List<QuestionType> types = questionTypeService.list();
         model.addAttribute("types", types);
         List<User> users = userService.findAllUser();
         model.addAttribute("users", users);
@@ -179,8 +200,19 @@ public class AdminController {
     }
 
     @PostMapping("/updateQuestion")
-    public String updateQuestion(Model model, String id,String courseId, String questionText, String questionTrueImageUrl, String answerText, String answerTrueImageUrl, String score, String typeId, String userId, String enabled) {
-        boolean b = questionService.updateQuestion(id, courseId, questionText, questionTrueImageUrl, answerText, answerTrueImageUrl, score, typeId, userId, enabled);
+    public String updateQuestion(Model model, String id, String courseId, String questionText, String questionTrueImageUrl, String answerText, String answerTrueImageUrl, String score, String typeId, String userId, String enabled) {
+        Question tmpQuestion = new Question();
+        tmpQuestion.setId(Integer.valueOf(id));
+        tmpQuestion.setCourseId(Integer.valueOf(courseId));
+        tmpQuestion.setQuestionText(questionText);
+        tmpQuestion.setQuestionUrl(questionTrueImageUrl);
+        tmpQuestion.setAnswerText(answerText);
+        tmpQuestion.setAnswerUrl(answerTrueImageUrl);
+        tmpQuestion.setScore(Integer.valueOf(score));
+        tmpQuestion.setQuestionTypeId(Integer.valueOf(typeId));
+        tmpQuestion.setCreateUserId(Integer.valueOf(userId));
+        tmpQuestion.setEnabled("on".equals(enabled));
+        boolean b = questionService.updateById(tmpQuestion);
         if (b) {
             model.addAttribute("success", 1);
             model.addAttribute("msg", "修改成功!");
@@ -188,12 +220,12 @@ public class AdminController {
             model.addAttribute("success", 0);
             model.addAttribute("msg", "修改失败,内部错误!");
         }
-        List<Question> questions = questionService.findAllQuestion();
+        List<Question> questions = questionService.list();
         List<QuestionVo> questionVos = new ArrayList<>();
         for (Question question : questions) {
             QuestionVo questionVo = new QuestionVo();
             questionVo.setQuestion(question);
-            questionVo.setCourseName(courseService.findCourseById(String.valueOf(question.getCourseId())).getName());
+            questionVo.setCourseName(courseService.getById(String.valueOf(question.getCourseId())).getName());
             questionVos.add(questionVo);
         }
         model.addAttribute("questionVos", questionVos);
@@ -202,7 +234,7 @@ public class AdminController {
 
     @GetMapping("deleteQuestion")
     public String deleteQuestion(String id, Model model) {
-        boolean b = questionService.deleteById(id);
+        boolean b = questionService.removeById(id);
         if (b) {
             model.addAttribute("success", 1);
             model.addAttribute("msg", "删除成功!");
@@ -210,12 +242,12 @@ public class AdminController {
             model.addAttribute("success", 0);
             model.addAttribute("msg", "删除失败,内部错误!");
         }
-        List<Question> questions = questionService.findAllQuestion();
+        List<Question> questions = questionService.list();
         List<QuestionVo> questionVos = new ArrayList<>();
         for (Question question : questions) {
             QuestionVo questionVo = new QuestionVo();
             questionVo.setQuestion(question);
-            questionVo.setCourseName(courseService.findCourseById(String.valueOf(question.getCourseId())).getName());
+            questionVo.setCourseName(courseService.getById(String.valueOf(question.getCourseId())).getName());
             questionVos.add(questionVo);
         }
         model.addAttribute("questionVos", questionVos);

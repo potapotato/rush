@@ -1,5 +1,6 @@
 package top.waxijiang.rush.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import top.waxijiang.rush.entity.Course;
 import top.waxijiang.rush.entity.User;
 import top.waxijiang.rush.service.CourseService;
 import top.waxijiang.rush.service.UserService;
@@ -37,7 +39,8 @@ public class IndexController {
 
     @RequestMapping("")
     public String toIndex(Model model) {
-        model.addAttribute("courses", courseService.findAllCourse());
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<Course>().eq("enabled", true);
+        model.addAttribute("courses", courseService.list(queryWrapper));
         return "index";
     }
 
@@ -85,7 +88,7 @@ public class IndexController {
     }
 
     @GetMapping("refuse")
-    public String refuse(){
+    public String refuse() {
         return "refuse";
     }
 }

@@ -1,5 +1,7 @@
 package top.waxijiang.rush.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,6 +9,7 @@ import java.util.Date;
  * Course
  * @author 
  */
+@TableName("Course")
 public class Course implements Serializable {
     private Integer id;
 

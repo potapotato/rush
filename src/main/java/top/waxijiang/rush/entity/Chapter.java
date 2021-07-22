@@ -1,5 +1,7 @@
 package top.waxijiang.rush.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,6 +9,7 @@ import java.util.Date;
  * Chapter
  * @author 
  */
+@TableName("Chapter")
 public class Chapter implements Serializable {
     private Integer id;
 

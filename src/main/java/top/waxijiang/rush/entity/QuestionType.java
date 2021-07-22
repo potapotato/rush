@@ -1,11 +1,14 @@
 package top.waxijiang.rush.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
 /**
  * Question_type
  * @author 
  */
+@TableName("Question_type")
 public class QuestionType implements Serializable {
     private Integer id;
 

@@ -1,5 +1,6 @@
 package top.waxijiang.rush.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import top.waxijiang.rush.entity.Role;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * @author waxijiang
  */
-public interface RoleService {
+public interface RoleService extends IService<Role> {
     /**
      * 通过用户名查找角色
      *

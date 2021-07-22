@@ -22,7 +22,7 @@ public class CourseController {
 
     @RequestMapping("/{id}")
     public String toCourseDetail(@PathVariable("id") String cid, Model model) {
-        model.addAttribute("course", courseService.findCourseById(cid));
+        model.addAttribute("course", courseService.getById(cid));
         return "course_detail";
     }
 }

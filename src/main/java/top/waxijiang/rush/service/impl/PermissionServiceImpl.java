@@ -1,5 +1,6 @@
 package top.waxijiang.rush.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.waxijiang.rush.dao.PermissionDao;
@@ -12,7 +13,7 @@ import java.util.List;
  * @author waxijiang
  */
 @Service("permissionService")
-public class PermissionServiceImpl implements PermissionService {
+public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission> implements PermissionService {
     @Autowired
     PermissionDao permissionDao;
 

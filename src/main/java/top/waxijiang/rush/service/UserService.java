@@ -1,5 +1,6 @@
 package top.waxijiang.rush.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import top.waxijiang.rush.entity.Role;
 import top.waxijiang.rush.entity.User;
 
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * @author waxijiang
  */
-public interface UserService {
+public interface UserService extends IService<User> {
     /**
      * 用户注册
      *
