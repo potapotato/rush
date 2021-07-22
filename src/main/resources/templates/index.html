@@ -6,16 +6,27 @@
     <title>冲鸭~(～￣▽￣)～</title>
     <!-- 引入样式 -->
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/elementUI.css}">
     <link rel="shortcut icon" th:href="@{icon/duck.ico}">
     <style>
         footer {
             position: absolute;
             bottom: 0;
             width: 100%;
+            height: 100px;
+            background-color: #FFFFFF
         }
 
         html, body {
             height: 100%;
+        }
+
+        .course-card {
+            cursor: pointer;
+        }
+
+        .course-card:hover {
+            box-shadow: 1px 1px 6px #777777;
         }
     </style>
 </head>
@@ -24,24 +35,20 @@
 <div id="app">
     <header th:insert="header::header"></header>
     <main role="main">
-        <div class="album py-5 bg-light" style="padding-bottom: 400px !important;">
+        <div class="album py-5 bg-light" style="padding-bottom: 450px !important;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-3" th:each="course:${courses}">
-                        <div class="card mb-3 shadow-sm">
-                            <title th:text="${course.name}"></title>
-                            <img width="100%" height="200px" style="object-fit: scale-down"
+                        <div style="display: none" th:text="${course.id}"></div>
+                        <div class="card mb-3 course-card" onclick="toDetail(this)" th:id="'course_' + ${course.id}">
+                            <img width="100%" height="150px"
                                  th:src="@{/img/getImage(imgPath=${course.imgUrl})}"
                                  alt="no">
                             <div class="card-body">
-                                <p class="card-text" th:text="${course.name}"></p>
+                                <p class="card-text" th:text="${course.name}" style="font-weight: bold;margin-bottom: 0;"></p>
+                                <div class="align-items-center" th:text="${course.description}" style="color: gray;height: 30px;overflow: hidden;line-height: 30px;font-size: small"></div>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <a href="#"
-                                           class="btn btn-sm btn-outline-secondary">我要做题</a>
-                                        <a href="#"
-                                           class="btn btn-sm btn-outline-secondary">我要复习</a>
-                                    </div>
+                                    <small class="text-muted" style="color: #00C758!important;"><i class="el-icon-time"></i> 创建时间: <span th:text="${#dates.format(course.createdTime, 'yyyy-MM-dd')}"></span></small>
                                     <small class="text-muted">总题量: 0</small>
                                 </div>
                             </div>
@@ -52,14 +59,15 @@
         </div>
     </main>
 </div>
-<!--<footer class="footer mt-auto py-3 bg-light">-->
-<!--    <div class="container">-->
-<!--        <span class="text-muted">Place sticky footer content here.</span>-->
-<!--    </div>-->
-<!--</footer>-->
+
 <footer th:insert="footer::footer" class="text-muted"></footer>
 
 </body>
+<script th:inline="javascript">
+    function toDetail(e) {
+        window.location.href = "/course/" + e.id.split("_")[1]
+    }
+</script>
 <!-- 引入组件库 -->
 <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
