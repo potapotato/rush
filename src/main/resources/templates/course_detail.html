@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>冲鸭~(～￣▽￣)～</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
-    <script src="../static/js/jquery-3.4.1.min.js"></script>
-    <script src="../static/js/bootstrap.min.js"></script>
-    <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css">
+    <script th:src="@{/js/jquery-3.4.1.min.js}" src="../static/js/jquery-3.4.1.min.js"></script>
+    <script th:src="@{/js/bootstrap.min.js}" src="../static/js/bootstrap.min.js"></script>
     <style>
         .course-img {
             width: 510px;
@@ -64,42 +61,33 @@
 <div class="container py-3">
     <div class="row">
         <div class="col-md-6">
-            <img th:src="@{/img/getImage(imgPath=${course.imgUrl})}" alt="课程图片"
+            <img th:src="@{/img/getImage(imgPath=${courseWrapper.course.imgUrl})}" alt="课程图片"
                  class="rounded float-left course-img">
         </div>
         <div class="col-md-6">
             <div class="course-title">
-                <div class="course-title-text" th:text="${course.name}"></div>
+                <div class="course-title-text" th:text="${courseWrapper.course.name}"></div>
                 <button type="button" class="btn btn-info">管理题库</button>
             </div>
             <hr>
             <div class="course-owner">
-                创建者: <span th:text="${course.createUserId}"></span>
+                创建者: <span th:text="${courseWrapper.course.createUserId}"></span>
             </div>
-            <div class="course-info">
+            <div class="course-info">ooo
                 <div class="course-info-header">
                     <div class="course-info-header-createTime">
-                        创建时间：<span th:text="${course.createdTime}"></span>
+                        创建时间：<span th:text="${#dates.format(courseWrapper.course.createdTime, 'yyyy-MM-dd')}"></span>
                     </div>
                     <div class="course-info-header-chapterNum">
-                        章数目：<span>5</span>章
-                    </div>
-                    <div class="course-info-header-sectionNum">
-                        节数目：<span>12</span>节
+                        章数目：<span th:text="${courseWrapper.chapters.size()}"></span>章
                     </div>
                     <div class="course-info-header-questionNum">
-                        题目数：<span>122</span>道
+                        题目数：<span th:text="${courseWrapper.questionNum}"></span>道
                     </div>
                     <div class="course-info-header-status">
-                        访问权限：开放
+                        访问权限：私有
                     </div>
                 </div>
-                <!--                <div class="course-info-bottom d-flex justify-content-between align-items-center">-->
-                <!--                    <button type="button" class="btn btn-success btn-lg">贡献题目</button>-->
-                <!--                    <button type="button" class="btn btn-info btn-lg">贡献资料</button>-->
-                <!--                    <button type="button" class="btn btn-warning btn-lg">管理题库</button>-->
-                <!--                    <button type="button" class="btn btn-danger btn-lg">删除题库</button>-->
-                <!--                </div>-->
             </div>
         </div>
     </div>
@@ -108,59 +96,27 @@
             <div class="title-text" style="color: rgb(201,97,245)">章节列表</div>
             <hr>
             <div class="accordion" id="accordionExample">
-                <div class="card">
+                <div class="card" th:each="chapterWrapper,chapterStatus : ${courseWrapper.chapters}">
                     <div class="card-header" id="headingOne">
                         <h2 class="mb-0">
                             <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
-                                    data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                第一章：集合
+                                    th:attr="data-target='#course'+${chapterWrapper.chapter.id}"
+                                    data-target="#collapseOne"
+                                    aria-expanded="true" aria-controls="collapseOne"
+                                    th:text="${chapterStatus.count}+'. '+${chapterWrapper.chapter.getName()}">
                             </button>
                         </h2>
                     </div>
 
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                    <div th:id="'course'+${chapterWrapper.chapter.id}" class="collapse show"
+                         aria-labelledby="headingOne"
                          data-parent="#accordionExample">
                         <div class="card-body">
                             <ul class="list-group">
-                                <li class="list-group-item">An item</li>
-                                <li class="list-group-item">A second item</li>
-                                <li class="list-group-item">A third item</li>
-                                <li class="list-group-item">A fourth item</li>
-                                <li class="list-group-item">And a fifth one</li>
+                                <li class="list-group-item"
+                                    th:text="${chapterStatus.count}+ '.'+ ${sectionStatus.count}+ ' ' +${section.getName()}"
+                                    th:each="section,sectionStatus:${chapterWrapper.sections}"></li>
                             </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingTwo">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left collapsed" type="button"
-                                    data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
-                                    aria-controls="collapseTwo">
-                                第二章：数列极限
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                        <div class="card-body">
-                            数列极限就是数列极限啦
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingThree">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left collapsed" type="button"
-                                    data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
-                                    aria-controls="collapseThree">
-                                第三章：函数极限
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
-                         data-parent="#accordionExample">
-                        <div class="card-body">
-                            函数极限就是函数极限啦
                         </div>
                     </div>
                 </div>
